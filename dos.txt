@@ -1,0 +1,128 @@
+$nmap -p22,80,443 -iL ips.txt
+This command will scan ports(22,80,443) for the hosts listed in ips.txt file
+
+$nmap -p22,80,443 -iR 2 ips.txt
+This command will scan ports(22,80,443) for the 2 random hosts listed in ips.txt file
+
+$nmap -sn 192.168.0.0/24
+This command will make a ping scan for the whole network: 192.168.0.1-255
+
+$sudo nmap --dns-servers 1.1.1.1 -p80 cu.edu.ge
+--dns-servers : Specify custom DNS servers
+--system-dns Use OS’s DNS resolve
+-n Never Do DNS resolution
+-R: Always Resolve (Default: Sometimes)
+
+$sudo nmap --traceroute -p80 cu.edu.ge
+--traceroute: Trace hop path to each host
+
+$sudo nmap -sS -p80 192.168.0.0/24
+-sS scan with SYN packets
+Try with –sA/-sU
+
+$sudo nmap -p1-5 192.168.0.0/24
+-F fast mode   scan fewer ports than the default scan
+-U for UDP    (-sU is required)
+-T for TCP  (-sS or any other TCP method is Required)
+
+$sudo nmap -sV -p22 192.168.0.0/24
+-sV probe open ports to determine service/version info
+-U for UDP    (-sU is required)
+-T for TCP  (-sS or any other TCP method is Required)
+--version-intensity <level>:  Set from 0 (light) to 9 (try all probes)
+--version-light: Limit to most likely probes (intensity 2)
+--version-all: Try every single probe (intensity 9)
+--version-trace: Show detailed version scan activity (for debugging)           
+
+$sudo nmap -O -p22,80,443 192.168.0.1
+-O enable OS Detection
+--osscan-limit: Limit OS detection to promising targets
+ --osscan-guess: Guess OS more aggressively
+
+$ sudo nmap -v --reason --iflist -p22,21,80,443 192.168.0.1
+-v: Increase verbosity level (use -vv or more for greater effect) 
+-d: Increase debugging level (use -dd or more for greater effect) 
+--reason: Display the reason a port is in a particular state
+--open: Only show open (or possibly open) ports
+--packet-trace: Show all packets sent and received
+--iflist: Print host interfaces and routes (for debugging)
+
+$ tcpdump -D
+-D List available interfaces
+
+$ sudo tcpdump -i eth0 
+Just see what’s going on, by looking at what’s hitting your interface.
+
+$ sudo tcpdump -v host 192.168.0.232
+One of the most common queries, using host, you can see traffic that’s going to or from 192.168.0.232
+
+$ sudo tcpdump -v port 80
+You can find specific port traffic by using the port option followed by the port number.
+
+$ sudo tcpdump -v portrange 80-500
+You can also use a range of ports to find traffic.
+
+$ sudo tcpdump -v net 192.168.0.0/24
+To find packets going to or from a particular network or subnet, use the net option.
+
+$ sudo tcpdump -v src 192.168.0.232
+If you only want to see traffic in one direction or the other, you can use src and dst.
+
+$ sudo tcpdump -v icmp 
+If you’re looking for one particular kind of traffic, you can use tcp, udp, icmp, and many others as well.
+
+$ sudo tcpdump -v portrange 80 –w jorge.pcpng
+It’s often useful to save packet captures into a file for analysis in the future. These files are known as PCAP (PEE-cap) files, and they can be processed by hundreds of different applications, including network analyzers, intrusion detection systems, and of course by tcpdump itself. Here we’re writing to a file called capture_file using the -w switch.
+
+$ sudo tcpdump -r jorge.pcpng
+You can read PCAP files by using the -r switch. Note that you can use all the regular commands within tcpdump while reading in a file; you’re only limited by the fact that you can’t capture and process what doesn’t exist in the file already.
+
+$ sudo tcpdump host 178.134.23.146 -r jorge.pcpng
+
+$sudo tcpdump dst host 178.134.23.146 -r jorge.pcpng
+
+port forwarding serveo
+$  ssh -R 80:example.com:80 serveo.net  #The target server doesn't have to be on localhost
+
+$rsync -zvh backup.tar.gz ~/Desktop/Vano     
+#The following command will sync a single file on a local machine from one location to another location.
+
+$rsync -avzh /root/rpmpkgs ~/Dekstop/Vano/                           
+#The following command will transfer or sync all the files from one directory to a different directory in the same machine.
+
+$rsync -zvh backup.tar.gz ~/Desktop/Vano     
+#The following command will sync a single file on a local machine from one location to another location.
+
+$rsync -avzh /root/rpmpkgs ~/Dekstop/Vano/                           
+#The following command will transfer or sync all the files from one directory to a different directory in the same machine.
+
+$foremost -t jpg,pdf,mp4,exe -v -q -i /dev/sdb2 -o /root/Desktop/recover 
+-t: It is the type of files we want to recover. Files to recover: jpg, pdf,mp4, and exe files.
+-q: It is a quick scan for the device
+-i: It means the input as in this case external memory.
+-o: It is the output folder, where to save the recovered files.
+
+$sudo fdisk –l  #Get partition name
+
+pestudio--- static malware analysis
+process hacker---dynamic
+procmon process monitor--- dynamic
+
+
+
+Download the file and check, who was tring to authenticate on FTP service on this domain: iesdata.iliauni.edu.ge. Determine if attacker has granted access. 
+tcpdump -r file.pcapng | grep 'iesdata.iliauni.edu.ge'
+tcpdump -r file.pcapng | grep '212.72.141.34'
+the hacker tried sending requests to iesdata.iliauni.edu.ge on port 40 which is the tcp port
+but we found the external ip of the website which is 212.72.141.34
+we are able to determine that the hacker entered some passwords but couldn't get access
+User: Giorgi_K
+Pass: Admin14
+IP Address: 192.168.0.183 (port 40752!)
+
+Download the file and determine if there was something wrong with ARP tables. 
+tcpdump -r file.pcapng | grep 'ARP'
+using tcpdump we can analyze the file to find the problem with ARP tables
+we can see that different ip addresses were detected from the same MAC address
+they were using arp poisoning and constantly tried to write their ip on the arp table.
+
